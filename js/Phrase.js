@@ -35,4 +35,28 @@
             document.querySelector('#phrase ul').appendChild(li);
          });
      }
+
+     checkLetter(guessedLetter) {
+         // storing 'this' object into variable
+         let that = this;
+        document.querySelectorAll('#phrase ul li').forEach(function(letter) {
+            if(guessedLetter === letter.textContent) {
+                that.showMatchedLetter(guessedLetter);
+            } else {
+                // disable onboard keyboard letter
+            }
+        });
+     }
+
+     /**
+      * loop through all li elements and change class if letter matches key pressed
+      * @param {string} key - key pressed on onscreen keyboard 
+      */
+     showMatchedLetter(key) {
+        document.querySelectorAll('li').forEach(function(letter) {
+            if(letter.textContent === key) {
+                letter.className = `show letter ${key}`;
+            }
+        });
+     }
  }
