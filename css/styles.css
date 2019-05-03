@@ -65,6 +65,11 @@ button {
 	margin: 0 auto;
 }
 
+#btn__reset:hover {
+  background: green;
+  color: white;
+}
+
 .main-container {
   display: flex;
   flex-direction: column;
@@ -130,16 +135,33 @@ button {
   justify-content: center;
 }
 
+.key {
+  width: 100px;
+  height: 60px;
+  font-size: 40px;
+}
+
+.key:hover {
+  background-color: gray;
+  color: white;
+}
+
 .chosen {
   background: #3a3f58;
   border-radius: 5px;
   font-size: var(--font-size-medium);
   color: #FFFFFF;
+  width: 100px;
+  height: 60px;
+  font-size: 40px;
 }
 
 .wrong {
   background: #f7a964;
   color: #FFFFFF;
+  width: 100px;
+  height: 60px;
+  font-size: 40px;
 }
 
 .btn__reset {
@@ -180,7 +202,7 @@ button {
 }
 
 .start {
-  background-color: #3a3f58;
+  background-color: #FD7F7F;
 }
 
 .start a {
@@ -196,7 +218,7 @@ button {
 }
 
 .lose {
-  background-color: #f5785f;
+  background-color: #FF0000;
 }
 
 .lose a {
