@@ -15,72 +15,117 @@ class Game {
     this.activePhrase = null;
   }
 
+  /**
+   * method to start game; selects random phrase object and sets it to dispay on web page
+   */
   startGame() {
     document.querySelector("#overlay").style.display = "none";
     this.activePhrase = this.getRandomPhrase();
     this.activePhrase.addPhraseToDisplay();
   }
 
+  /**
+   * method to select random phrase objects
+   */
   getRandomPhrase() {
     const randomNum = Math.floor(Math.random() * 5);
     return this.phrases[randomNum];
   }
 
   /**
-   * checks to see if the button clicked matches a letter in the phrase
-   * incorrect guess diasables letter
-   * correct guess checks to see if game is won/over
+   * checks to see if the button clicked matches a letter in the phrase and performs action
    */
-  handleInteraction(element) {
-    const checkLetter = this.activePhrase.checkLetter(element.textContent);
+  handleInteraction(key) {
+    // checks whether the onscreen key clicked matches the phrase and returns true or false
+    const matchedLetter = this.activePhrase.matchedLetter(key.textContent);
 
-    if (checkLetter) {
-      element.className = "chosen";
-      this.activePhrase.showMatchedLetter(element.textContent);
+    // if letter matches, add class name to button clicked, reveal letter placeholders and check to see if game is won
+    // if game is won, call gameOver() method
+    // if letter matches returns false, add 'wrong' classname and call removeLife method
+    if (matchedLetter) {
+      key.className = "chosen";
+      this.activePhrase.showMatchedLetter(key.textContent);
       this.checkForWin();
 
       if (this.checkForWin()) {
         this.gameOver();
       }
     } else {
-      element.className = "wrong";
-      // 'this' is the game object
+      key.className = "wrong";
       this.removeLife();
     }
   }
 
+  /**
+   * method to increment 'missed' property and remove heart
+   */
   removeLife() {
-    (this.missed === 5) ? this.gameOver() : this.missed++;
-    document.querySelectorAll('#scoreboard li img')[this.missed-1].setAttribute('src', 'images/lostHeart.png');
+    this.missed === 5 ? this.gameOver() : this.missed++;
+    document
+      .querySelectorAll("#scoreboard li img")
+      [this.missed - 1].setAttribute("src", "images/lostHeart.png");
   }
 
+  /**
+   * method to check if game is won
+   */
   checkForWin() {
-    const letters = document.querySelectorAll('#phrase li');
+    const letters = document.querySelectorAll("#phrase li");
+    // create variable to keep track of letters revealed
     let numOfLettersRevealed = 0;
-    
+
+    //loop through all li elements increment counter everytime a letter is revealed
     letters.forEach(function(letter) {
-      if(!letter.className.includes('hide')) {
+      if (!letter.className.includes("hide")) {
         numOfLettersRevealed++;
-      } 
+      }
     });
 
-    if(numOfLettersRevealed === this.activePhrase.phrase.length) {
+    // check if the revealed letter counter is equal to the number of characters in the phrase
+    if (numOfLettersRevealed === this.activePhrase.phrase.length) {
       return true;
     } else {
       return false;
     }
   }
 
+  /**
+   * display overlay to end game and resets game
+   */
   gameOver() {
+    // display messaged based on if game is won or loss
     if (this.missed === 5) {
-      document.querySelector('#game-over-message').textContent = "YOU LOSE.";
-      document.querySelector('#overlay').style.display = 'flex';
-      document.querySelector('#overlay').className = 'lose';
-      
+      document.querySelector("#game-over-message").textContent = "YOU LOSE.";
+      document.querySelector("#overlay").style.display = "flex";
+      document.querySelector("#overlay").className = "lose";
     } else {
-      document.querySelector('#game-over-message').textContent = "YOU WIN!";
-      document.querySelector('#overlay').style.display = 'flex';
-      document.querySelector('#overlay').className = 'win';
+      document.querySelector("#game-over-message").textContent = "YOU WIN!";
+      document.querySelector("#overlay").style.display = "flex";
+      document.querySelector("#overlay").className = "win";
     }
+
+    this.resetGame();
+  }
+
+  /**
+   * method to reset game;
+   * delete all li elements; enable button and set class back to 'key', and reset heart images
+   */
+  resetGame() {
+    const phraseUl = document.querySelector("#phrase ul");
+    if (phraseUl.hasChildNodes()) {
+      document.querySelectorAll("#phrase ul li").forEach(function(li) {
+        phraseUl.removeChild(phraseUl.lastElementChild);
+      });
+    }
+
+    document.querySelectorAll("#qwerty button").forEach(function(element) {
+      element.removeAttribute("disabled");
+      element.className = "key";
+    });
+
+    document.querySelectorAll("#scoreboard li img").forEach(function(element) {
+      element.setAttribute("src", "images/liveHeart.png");
+    });
   }
 }

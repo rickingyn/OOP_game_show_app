@@ -8,24 +8,19 @@ class Phrase {
   }
 
   /**
-   * adds letter placeholders to the display when game starts
-   * take phrase, and separate each letter and add to array
-   * create and add each letter to li element
+   * method to separate each characters from the phrase into an array
+   * create li element for each letter in the array and append to phrase ul
    */
   addPhraseToDisplay() {
     // separates each character in prhase into an array
     const letters = this.phrase.split("");
 
-    /**
-     * loop through letters array
-     * create li element for each character
-     * add class name depending if it is a letter or space character
-     * append li element to ul element in div with id "phase"
-     * */
+    // loop through letters and add class name
     letters.forEach(function(letter) {
       const li = document.createElement("li");
       li.textContent = letter;
 
+      // use regex to check if array item is a letter or a space; add class name accordingly
       if (/[a-z]/.test(letter)) {
         li.className = `hide letter ${letter}`;
       } else if (/\s/.test(letter)) {
@@ -36,6 +31,11 @@ class Phrase {
     });
   }
 
+  /**
+   * Method to check if onscreen key clicked matches phrase
+   * @param {string} key - letter from the onscreen keyboard
+   * @return {boolean} boolean value indicating whether the onscreen key clicked matches the phrase
+   */
   checkLetter(key) {
     return this.phrase.includes(key);
   }
