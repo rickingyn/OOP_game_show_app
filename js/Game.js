@@ -35,23 +35,23 @@ class Game {
   /**
    * checks to see if the button clicked matches a letter in the phrase and performs action
    */
-  handleInteraction(key) {
+  handleInteraction(element) {
     // checks whether the onscreen key clicked matches the phrase and returns true or false
-    const matchedLetter = this.activePhrase.matchedLetter(key.textContent);
+    const matchedLetter = this.activePhrase.checkLetter(element.textContent);
 
     // if letter matches, add class name to button clicked, reveal letter placeholders and check to see if game is won
     // if game is won, call gameOver() method
     // if letter matches returns false, add 'wrong' classname and call removeLife method
     if (matchedLetter) {
-      key.className = "chosen";
-      this.activePhrase.showMatchedLetter(key.textContent);
+      element.className = "chosen";
+      this.activePhrase.showMatchedLetter(element.textContent);
       this.checkForWin();
 
       if (this.checkForWin()) {
         this.gameOver();
       }
     } else {
-      key.className = "wrong";
+      element.className = "wrong";
       this.removeLife();
     }
   }
@@ -60,10 +60,12 @@ class Game {
    * method to increment 'missed' property and remove heart
    */
   removeLife() {
-    this.missed === 5 ? this.gameOver() : this.missed++;
-    document
-      .querySelectorAll("#scoreboard li img")
-      [this.missed - 1].setAttribute("src", "images/lostHeart.png");
+    if(this.missed === 5) {
+      this.gameOver();
+    } else {
+      this.missed++;
+      document.querySelectorAll("#scoreboard li img")[this.missed - 1].setAttribute("src", "images/lostHeart.png");
+    }
   }
 
   /**
@@ -112,6 +114,8 @@ class Game {
    * delete all li elements; enable button and set class back to 'key', and reset heart images
    */
   resetGame() {
+    this.missed = 0;
+
     const phraseUl = document.querySelector("#phrase ul");
     if (phraseUl.hasChildNodes()) {
       document.querySelectorAll("#phrase ul li").forEach(function(li) {
