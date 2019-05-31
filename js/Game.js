@@ -60,12 +60,11 @@ class Game {
    * method to increment 'missed' property and remove heart
    */
   removeLife() {
+    this.missed++;
+    document.querySelectorAll("#scoreboard li img")[this.missed - 1].setAttribute("src", "images/lostHeart.png");
     if(this.missed === 5) {
       this.gameOver();
-    } else {
-      this.missed++;
-      document.querySelectorAll("#scoreboard li img")[this.missed - 1].setAttribute("src", "images/lostHeart.png");
-    }
+    } 
   }
 
   /**
